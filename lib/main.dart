@@ -13,14 +13,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-        listenable: themeController,
-        builder: (context, child) {
+    return ValueListenableBuilder(
+        valueListenable: themeController,
+        builder: (context, value, child) {
           return MaterialApp(
             title: 'Flutter Demo',
-            theme: themeController.isDarkTheme
-                ? ThemeData.dark()
-                : ThemeData.light(),
+            theme: value ? ThemeData.dark() : ThemeData.light(),
             home: const MyHomePage(title: 'Flutter Demo Home Page'),
           );
         });

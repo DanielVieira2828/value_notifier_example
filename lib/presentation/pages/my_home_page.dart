@@ -21,11 +21,11 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Trocar tema do app"),
-            ListenableBuilder(
-                listenable: themeController,
-                builder: (contex, child) {
+            ValueListenableBuilder(
+                valueListenable: themeController,
+                builder: (contex, value, child) {
                   return Switch(
-                      value: themeController.isDarkTheme,
+                      value: value,
                       onChanged: (value) {
                         themeController.changeTheme();
                       });
