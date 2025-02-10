@@ -1,70 +1,119 @@
-# change_notifier_state
+# Exemplo de ValueNotifier no Flutter para troca de tema
 
-Um novo projeto Flutter.
+Este repositório demonstra o uso do `ValueNotifier` no Flutter para gerenciar o tema do aplicativo. O exemplo permite alternar entre o tema claro e escuro através de um Switch.
 
-## Introdução
+## Estrutura do Projeto
 
-Este projeto é um ponto de partida para uma aplicação Flutter que demonstra o uso de `ValueNotifier`.
+O projeto consiste em três arquivos principais:
 
-## Como funciona o ValueNotifier
+- `main.dart`: Arquivo principal que inicializa o aplicativo e define o tema.
+- `my_home_page.dart`: Widget da página inicial que contém o Switch para alternar o tema.
+- `theme_controller.dart`: Classe `ThemeController` que gerencia o estado do tema com um `ValueNotifier`.
 
-`ValueNotifier` é uma classe especial que estende `ChangeNotifier` e é usada para notificar ouvintes quando o valor armazenado muda. É útil para gerenciar estados simples em Flutter.
+## Código
 
-### Exemplo de Código
-
-Aqui está um exemplo de como usar `ValueNotifier` no código deste repositório:
+### `main.dart`
 
 ```dart
 import 'package:flutter/material.dart';
+import 'package:change_notifier_state/presentation/controllers/theme_controller.dart';
+import 'package:change_notifier_state/presentation/pages/my_home_page.dart';
 
 void main() {
-    runApp(MyApp());
+  runApp(const MyApp());
 }
+
+final themeController = ThemeController();
 
 class MyApp extends StatelessWidget {
-    @override
-    Widget build(BuildContext context) {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: themeController,
+      builder: (context, value, child) {
         return MaterialApp(
-            home: ValueNotifierExample(),
+          title: 'Flutter Demo',
+          theme: value ? ThemeData.dark() : ThemeData.light(),
+          home: const MyHomePage(title: 'Flutter Demo Home Page'),
         );
-    }
+      },
+    );
+  }
 }
 
-class ValueNotifierExample extends StatelessWidget {
-    final ValueNotifier<int> _counter = ValueNotifier<int>(0);
+Neste arquivo, o widget ValueListenableBuilder escuta as mudanças no themeController.  Sempre que o valor do tema é alterado, o MaterialApp é reconstruído com o novo tema.
 
-    @override
-    Widget build(BuildContext context) {
-        return Scaffold(
-            appBar: AppBar(
-                title: Text('ValueNotifier Example'),
-            ),
-            body: Center(
-                child: ValueListenableBuilder<int>(
-                    valueListenable: _counter,
-                    builder: (context, value, child) {
-                        return Text('Counter: $value');
-                    },
-                ),
-            ),
-            floatingActionButton: FloatingActionButton(
-                onPressed: () => _counter.value += 1,
-                child: Icon(Icons.add),
-            ),
-        );
-    }
+my_home_page.dart
+
+Dart
+
+import 'package:flutter/material.dart';
+import 'package:change_notifier_state/main.dart';
+
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
 }
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("ChangeNotifier"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("Trocar tema do app"),
+            ValueListenableBuilder(
+              valueListenable: themeController,
+              builder: (context, value, child) {
+                return Switch(
+                  value: value,
+                  onChanged: (value) {
+                    themeController.changeTheme();
+                  },
+                );
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+Aqui, outro ValueListenableBuilder escuta o themeController para atualizar o estado do Switch.  Quando o Switch é alterado, o método themeController.changeTheme() é chamado.
+
+theme_controller.dart
+Dart
+
+import 'package:flutter/material.dart';
+
+class ThemeController extends ValueNotifier<bool> {
+  ThemeController() : super(false);
+
+  void changeTheme() {
+    value = !value;
+  }
+}
+A classe ThemeController estende ValueNotifier<bool>. O valor booleano representa o tema atual (true para escuro, false para claro). O método changeTheme() inverte o valor atual do tema, notificando os ouvintes (os ValueListenableBuilder no main.dart e my_home_page.dart).
+
+Explicação
+O ValueNotifier é uma classe que armazena um valor e notifica seus ouvintes quando esse valor é alterado.  Neste exemplo, o ThemeController usa um ValueNotifier<bool> para armazenar o estado do tema.  Os widgets ValueListenableBuilder escutam as mudanças no ThemeController e se rebuildam quando o tema é alterado, garantindo que a interface do usuário reflita o tema atual.
+
+Como executar
+Clone este repositório.
+Certifique-se de ter o Flutter SDK instalado.
+Execute flutter pub get no diretório do projeto para instalar as dependências.
+Execute flutter run para iniciar o aplicativo.
+Este exemplo demonstra uma forma simples e eficaz de gerenciar o estado do tema em um aplicativo Flutter usando ValueNotifier.  É uma alternativa leve ao ChangeNotifier para casos mais simples, onde apenas um único valor precisa ser gerenciado.
 ```
-
-Neste exemplo, `ValueNotifier<int>` é usado para gerenciar o estado do contador. O `ValueListenableBuilder` reconstrói o widget sempre que o valor do contador muda.
-
-## Recursos Adicionais
-
-Alguns recursos para ajudá-lo a começar se este for seu primeiro projeto Flutter:
-
-- [Lab: Escreva seu primeiro app Flutter](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Exemplos úteis de Flutter](https://docs.flutter.dev/cookbook)
-
-Para obter ajuda sobre como começar com o desenvolvimento Flutter, veja a
-[documentação online](https://docs.flutter.dev/), que oferece tutoriais,
-exemplos, orientações sobre desenvolvimento móvel e uma referência completa da API.
