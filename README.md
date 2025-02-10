@@ -14,7 +14,7 @@ O projeto consiste em três arquivos principais:
 
 ### `main.dart`
 
-```dart
+`````dart
 import 'package:flutter/material.dart';
 import 'package:change_notifier_state/presentation/controllers/theme_controller.dart';
 import 'package:change_notifier_state/presentation/pages/my_home_page.dart';
@@ -41,11 +41,11 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-}
+} ````
 
 Neste arquivo, o widget ValueListenableBuilder escuta as mudanças no themeController.  Sempre que o valor do tema é alterado, o MaterialApp é reconstruído com o novo tema.
 
-my_home_page.dart
+### `my_home_page.dart`
 
 Dart
 
@@ -116,4 +116,4 @@ Certifique-se de ter o Flutter SDK instalado.
 Execute flutter pub get no diretório do projeto para instalar as dependências.
 Execute flutter run para iniciar o aplicativo.
 Este exemplo demonstra uma forma simples e eficaz de gerenciar o estado do tema em um aplicativo Flutter usando ValueNotifier.  É uma alternativa leve ao ChangeNotifier para casos mais simples, onde apenas um único valor precisa ser gerenciado.
-```
+`````
