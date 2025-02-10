@@ -117,6 +117,8 @@ class ThemeController extends ValueNotifier<bool> {
 
 A classe `ThemeController` estende `ValueNotifier<bool>`. O valor booleano representa o tema atual (`true` para escuro, `false` para claro). O método `changeTheme()` inverte o valor atual do tema, notificando os ouvintes (`ValueListenableBuilder` no `main.dart` e `my_home_page.dart`).
 
+---
+
 ## ℹ️ `Explicação`
 
 O `ValueNotifier` é uma classe que armazena um valor e notifica seus ouvintes quando esse valor é alterado.
